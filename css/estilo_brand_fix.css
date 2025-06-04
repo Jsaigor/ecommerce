@@ -1,0 +1,10 @@
+/* Estilo fijo para navbar-brand (Electro STORE) */
+.navbar a.navbar-brand {
+  color: #ffffff; /* Color base blanco */
+  font-weight: bold;
+}
+
+.navbar a.navbar-brand:hover {
+  color: #0d6efd; /* Azul Bootstrap en hover */
+  text-decoration: none;
+}

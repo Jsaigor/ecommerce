@@ -1,0 +1,366 @@
+body {
+  margin-top: 120px;
+  font-family: Arial, sans-serif;
+  background: #e8e7f1;
+  margin: 0;
+}
+
+.main-header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: linear-gradient(to right, #444, #2a4e8a, #0074d9);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px;
+  z-index: 1050;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.main-header:hover {
+  background: linear-gradient(to right, #666, #4c7ecb, #0074d9);
+}
+
+/* === Logo === */
+.logo {
+  height: 90px;
+  object-fit: contain;
+  border-radius: 15px;
+}
+
+/* === Navbar === */
+.navbar {
+  width: 100%;
+  padding: 0 !important;
+}
+
+.navbar-brand {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #fff !important;
+  margin-right: 30px;
+}
+
+.navbar-brand:hover {
+  color: #ffdd57 !important;
+}
+
+/* === Ítems del Menú === */
+.navbar-nav .nav-link {
+  color: #fff !important;
+  font-weight: 600;
+  font-size: 1.05rem;
+  margin-right: 18px;
+  transition: color 0.2s;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: #ffdd57 !important;
+}
+
+/* === Dropdown personalizado === */
+.dropdown-menu {
+  background-color: #2c2c2c;
+  color: white;
+  border-radius: 10px;
+  border: 1px solid #444;
+  padding: 20px;
+}
+
+.dropdown-menu label {
+  color: #ddd;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.dropdown-menu select {
+  background-color: #444;
+  color: white;
+  border: 1px solid #666;
+  border-radius: 5px;
+  padding: 6px;
+}
+
+/* === Formulario de búsqueda === */
+form.d-flex input.form-control {
+  border-radius: 20px 0 0 20px;
+  border-right: none;
+}
+
+form.d-flex button.btn {
+  border-radius: 0 20px 20px 0;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .main-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-nav {
+    margin-top: 10px;
+  }
+
+  .navbar-brand {
+    margin-right: 0;
+  }
+
+  form.d-flex {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+
+.navbar-brand img.logo {
+  height: 60px;
+  border-radius: 10px;
+}
+
+.navbar-nav .nav-link {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.navbar .form-control {
+  height: 36px;
+}
+
+.form-section {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.form-group {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea,
+select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form-buttons {
+  margin-top: 50px;
+}
+
+.form-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-warning {
+  background-color: #ffc107;
+  color: black;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 2rem;
+  background-color: #222;
+  color: #fff;
+  text-align: left;
+}
+
+.footer-section {
+  flex: 1 1 30%;
+  margin: 1rem;
+  min-width: 220px;
+}
+
+.footer-contacto address,
+.footer-contacto p,
+.footer-copy,
+.volver-arriba {
+  margin: 0.5rem 0;
+}
+
+.footer-redes {
+  margin: 1rem 0;
+}
+
+.footer-redes a {
+  margin: 0 0.7rem;
+  font-size: 1.5rem;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+.footer-redes a:hover {
+  color: #1e90ff;
+}
+
+.volver-arriba {
+  display: inline-block;
+  margin-top: 1rem;
+  color: #1e90ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.volver-arriba:hover {
+  text-decoration: underline;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 1rem;
+  }
+
+  .footer-redes a {
+    font-size: 1.3rem;
+  }
+
+  .volver-arriba {
+    font-size: 0.95rem;
+  }
+}
+.zoom-hover {
+    transition: transform 0.3s ease;
+    cursor: zoom-in;
+}
+
+.zoom-hover:hover {
+    transform: scale(1.15);
+}
+
+.carousel-img {
+    width: auto;
+    margin: 0 auto;
+    display: block;
+    object-fit: contain;
+    max-height: 250px; /* valor por defecto (móviles) */
+}
+
+/* Tablets y pantallas medianas */
+@media (min-width: 576px) {
+    .carousel-img {
+        max-height: 300px;
+    }
+}
+
+/* Escritorio y pantallas grandes */
+@media (min-width: 992px) {
+    .carousel-img {
+        max-height: 400px;
+    }
+}
+
+.carousel-item iframe {
+  pointer-events: auto;
+  z-index: 1;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  z-index: 2;
+}
+
+.carousel-inner {
+  display: flex;
+  align-items: center;
+  background-color: #000;
+}
+
+.carousel-inner1 {
+  height: 400px; 
+  display: flex;
+  align-items: center;
+  background-color: #ffffff; 
+}
+
+.carousel-inner2 {
+  height: 400px; 
+  display: flex;
+  align-items: top;
+  background-color: #ffffff; 
+}
+
+.carousel-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* por si la imagen se desborda */
+}
+
+.img-carrusel {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.img-wrapper {
+  position: relative;
+  height: 300px;   
+  background-color: #f8f9fa;
+  overflow: hidden;
+}
+
+.img-carrusel {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}
+
+.cucarda {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 110px;
+  height: auto;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .cucarda {
+    width: 40px;
+    top: 5px;
+    left: 5px;
+  }
+}

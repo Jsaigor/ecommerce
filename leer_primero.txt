@@ -1,0 +1,6 @@
+Para ver la p�gina en linea entrar al vinculo compartido con usuario y password (en github no funciona php)
+Hay una breve explicacion de como est� armado en readme.md
+
+http://javiersigot.com.preview.services/
+
+email/password "javier.sigot@gmail.com/J@vier1970"
