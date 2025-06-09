@@ -3,29 +3,36 @@ session_start();
 include 'init.php';
 require 'menu.php';
 require 'footer.php';
+require 'carrito_funciones.php';
 
-$_SESSION['carrito'] = $_SESSION['carrito'] ?? [];
-
-// Normalizar carrito
-foreach ($_SESSION['carrito'] as $k => $v) {
-    if (is_int($v)) $_SESSION['carrito'][$k] = ['id' => $v, 'cantidad' => 1];
+// Si recibimos datos por POST, agregamos producto
+ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+    agregarAlCarrito((int)$_POST['id']);
 }
+
+// Normalizamos datos por si hay entradas sueltas
+normalizarCarrito();
+
+
+
+// Obtenemos el carrito para mostrar
+$carrito = obtenerCarrito();
 
 // Agregar producto
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-    $id = (int) $_POST['id'];
-    $encontrado = false;
-    foreach ($_SESSION['carrito'] as &$item) {
-        if ($item['id'] === $id) {
-            $item['cantidad']++;
-            $encontrado = true;
-            break;
-        }
-    }
-    if (!$encontrado) $_SESSION['carrito'][] = ['id' => $id, 'cantidad' => 1];
-    header("Location: carrito.php");
-    exit;
-}
+// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+//     $id = (int) $_POST['id'];
+//     $encontrado = false;
+//     foreach ($_SESSION['carrito'] as &$item) {
+//         if ($item['id'] === $id) {
+//             $item['cantidad']++;
+//             $encontrado = true;
+//             break;
+//         }
+//     }
+//     if (!$encontrado) $_SESSION['carrito'][] = ['id' => $id, 'cantidad' => 1];
+//     header("Location: carrito.php");
+//     exit;
+// }
 
 // Eliminar producto
 if (isset($_GET['remove'])) {
@@ -54,6 +61,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'], $_POST['can
     header("Location: carrito.php");
     exit;
 }
+
+// Cerramos sesión después de modificar
+session_write_close();
 
 ?>
 <!DOCTYPE html>

@@ -7,7 +7,7 @@ if (isset($_GET['item_id']) && is_numeric($_GET['item_id'])) {
     $condicion .= " AND id = $item_id";
 }
 
-$resultado = $db->query("SELECT * FROM productos $condicion");
+$resultado = $db->query("SELECT * FROM productos $condicion ORDER BY RANDOM()");
 
 
 echo '<div class="container mt-4">';
@@ -39,6 +39,7 @@ while ($producto = $resultado->fetchArray(SQLITE3_ASSOC)) {
         $carouselId = "carousel$item_id";
         echo "<div id='$carouselId' class='carousel slide' data-bs-ride='carousel'>";
         echo '  <div class="carousel-inner1">';
+        shuffle($imagenes); // Orden aleatorio de los registros del array
         foreach ($imagenes as $index => $img) {
             $active = $index === 0 ? 'active' : '';
             echo "    <div class='carousel-item $active'>";
