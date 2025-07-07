@@ -1,5 +1,5 @@
 <?php
-// Asegurate de incluir esto donde uses las funciones
+// Las funciones del Carrito
 function iniciarCarrito() {
     if (!isset($_SESSION['carrito'])) {
         $_SESSION['carrito'] = [];

@@ -27,6 +27,7 @@ try {
 </style>
 <body>
 <?php menu(); ?>
+<hr>
 <main class=main-main>
 <div class="container">
     <h1 class="mb-4">Administración de Stock</h1>

@@ -45,7 +45,7 @@ function menu() {
                                 <?php
                                 $categorias = $db->query("SELECT * FROM categorias");
                                 while ($cat = $categorias->fetchArray(SQLITE3_ASSOC)) {
-                                    echo '<option value="' . $cat['category_id'] . '">' . htmlspecialchars($cat['nombre']) . '</option>';
+                                echo '<option value="' . $cat['category_id'] . '">' . htmlspecialchars($cat['nombre']) . '</option>';
                                 }
                                 ?>
                             </select>
