@@ -323,6 +323,7 @@ textarea {
 }
 
 .carousel-item {
+  background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -363,4 +364,14 @@ textarea {
     top: 5px;
     left: 5px;
   }
+}
+
+.carousel-item .slide-card {
+  background-color: white;
+  color: black;
+  max-width: 350px;
+  margin: auto;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }

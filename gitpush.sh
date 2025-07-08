@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Paso 1: Mostrar estado del repo
 echo "🔍 Estado del repositorio:"
 git status
@@ -9,7 +7,7 @@ echo "🟢 Agregando archivos al staging..."
 git add .
 
 # Paso 3: Pedir mensaje de commit
-read -p "📝 Escribí un mensaje para el commit: " mensaje
+read -p "cambios del carrito" mensaje
 
 # Paso 4: Hacer commit
 git commit -m "$mensaje"

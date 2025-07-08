@@ -67,6 +67,7 @@ function menu() {
                 <li class="nav-item"><a class="nav-link" href="#footer">Contacto</a></li>
                 <li class="nav-item"><a class="nav-link" href="sucursales.php">Sucursales</a></li>
                 <li class="nav-item"><a class="nav-link" href="admin.php">Admin</a></li>
+                <li class="nav-item"><a class="nav-link" href="resenias.php">Reseñas</a></li>
             </ul>
 
             <!-- Buscador -->
