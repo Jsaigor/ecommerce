@@ -1,6 +1,6 @@
-<?php 
+<?php
 session_start();
-include 'init.php'; 
+include 'init.php';
 require 'menu.php';
 require 'footer.php';
 ?>
@@ -8,64 +8,66 @@ require 'footer.php';
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta charset="UTF-8">
-    <title>Electro'STORE</title>
-    <link rel="icon" href="./img/icon4.png">
-    <link rel="stylesheet" href="./css/estilo_v3.css">
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./css/aos.css">
-    <link rel='stylesheet' href="./css/uicons-brands.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Electro'STORE</title>
+  <link rel="icon" href="./img/icon4.png">
+  <link rel="stylesheet" href="./css/estilo_v3.css">
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/aos.css">
+  <link rel='stylesheet' href="./css/uicons-brands.css">
 </head>
+
 <body>
-<?php menu(); ?>
-<main class=main-main>
-<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000" >
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="./img/carousel3.webp" class="d-block w-100" alt="Imagen de inicio">
-    </div>
-    <div class="carousel-item">
-    <div class="d-flex justify-content-center">
-      <iframe width="1000" height="250"
-        src="https://www.youtube.com/embed/-cjVyp2Gf_w?loop=1&playlist=-cjVyp2Gf_w&autoplay=1&mute=1&controls=1"
-        title="YouTube video player"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin"
-        allowfullscreen>
-      </iframe>
-    </div>
-    </div>
-    <div class="carousel-item">
-      <img src="./img/carousel4.webp" class="d-block w-100" alt="imagen de ofertas">
-    </div>
-    <div class="carousel-item">
-      <img src="./img/carousel5.webp" class="d-block w-100" alt="Imagen de Samsung lavado">
-    </div>
-    <div class="carousel-item">
-      <img src="./img/carousel6.webp" class="d-block w-100" alt="imagen de ofertas en 12 cuotas">
-    </div>
-  </div>
+  <?php menu(); ?>
+  <main class=main-main>
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="./img/carousel3.webp" class="d-block w-100" alt="Imagen de inicio">
+        </div>
+        <div class="carousel-item">
+          <div class="d-flex justify-content-center">
+            <iframe width="1000" height="250"
+              src="https://www.youtube.com/embed/-cjVyp2Gf_w?loop=1&playlist=-cjVyp2Gf_w&autoplay=1&mute=1&controls=1"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="./img/carousel4.webp" class="d-block w-100" alt="imagen de ofertas">
+        </div>
+        <div class="carousel-item">
+          <img src="./img/carousel5.webp" class="d-block w-100" alt="Imagen de Samsung lavado">
+        </div>
+        <div class="carousel-item">
+          <img src="./img/carousel6.webp" class="d-block w-100" alt="imagen de ofertas en 12 cuotas">
+        </div>
+      </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleSlidesOnly" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
+        <span class="carousel-control-prev-icon"></span>
       </button>
       <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleSlidesOnly" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
+        <span class="carousel-control-next-icon"></span>
       </button>
-</div>
-<hr>
-<h2>Productos disponibles</h2>
-<?php include 'mostrar_productos.php'; ?>
-<!-- <script src="./js/carrito.js"></script> -->
-<script src="./js/items.js"></script>
-<script src="./js/bootstrap.bundle.min.js"></script>
-</main>
-<hr>
-<?php footer(); ?>
+    </div>
+    <hr>
+    <h2>Productos disponibles</h2>
+    <?php include 'mostrar_productos.php'; ?>
+    <!-- <script src="./js/carrito.js"></script> -->
+    <script src="./js/items.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+  </main>
+  <hr>
+  <?php footer(); ?>
 </body>
+
 </html>

@@ -1,6 +1,6 @@
-<?php 
-    require 'menu.php';
-    require 'footer.php';
+<?php
+require 'menu.php';
+require 'footer.php';
 ?>
 
 <!DOCTYPE html>
@@ -47,9 +47,9 @@
     <footer>
         <?php footer(); ?>
     </footer>
-        <script src="./js/items.js"></script>
-        <script src="./js/bootstrap.bundle.min.js"></script>
-        <script src="./js/resenias.js"> </script>
+    <script src="./js/items.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
+    <script src="./js/resenias.js"> </script>
 </body>
 
 </html>

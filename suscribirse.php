@@ -15,23 +15,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['correo'])) {
         $insert = $db->prepare("INSERT INTO usuarios (correo, fecha) VALUES (?, ?)");
         $insert->bindValue(1, $correo, SQLITE3_TEXT);
         $insert->bindValue(2, $fecha, SQLITE3_TEXT);
-        $insert->execute();        
+        $insert->execute();
 
-            $url = "https://formspree.io/f/mkgraylq";
-            $data = ['email' => $correo]; // Formspree espera el campo "email" y en la DB se llama "correo"
+        $url = "https://formspree.io/f/mkgraylq";
+        $data = ['email' => $correo]; // Formspree espera el campo "email" y en la DB se llama "correo"
 
-            $options = [
+        $options = [
             'http' => [
-            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-            'method'  => 'POST',
-            'content' => http_build_query($data),],];
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data),
+            ],
+        ];
 
-            $context  = stream_context_create($options);
-            $result = file_get_contents($url, false, $context);
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
 
         if ($result === FALSE) {
-        // Si hay fallo
-        error_log("Error al enviar POST a Formspree");
+            // Si hay fallo
+            error_log("Error al enviar POST a Formspree");
         }
         // Si salió todo bien
         echo "<script>alert('¡Gracias por suscribirte!'); window.history.back();</script>";
@@ -43,4 +45,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['correo'])) {
 } else {
     echo "<script>alert('Correo no válido.'); window.history.back();</script>";
 }
-?>

@@ -6,7 +6,7 @@ $_SESSION['carrito'] = $_SESSION['carrito'] ?? [];
 
 $db = new SQLite3('TiendaDB.sqlite');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre'], $_POST['apellido'], $_POST['correo'], $_POST['telefono'], $_POST['direccion'], $_POST['cp'], $_POST['total'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre'], $_POST['apellido'], $_POST['correo'], $_POST['telefono'], $_POST['direccion'], $_POST['cp'], $_POST['total'])) {
     $stmt = $db->prepare("INSERT INTO usuarios (nombre, apellido, correo, telefono, direccion, cp, total) 
     VALUES (:nombre, :apellido, :correo, :telefono, :direccion, :cp, :total)");
 
@@ -21,15 +21,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre'], $_POST['ape
     $stmt->execute();
 }
 
-    // Actualización de cantidades en la tabla productos
-    if (isset($_POST['finalizar'])) {
+// Actualización de cantidades en la tabla productos
+if (isset($_POST['finalizar'])) {
     foreach ($_SESSION['carrito'] as $id => $item) {
         $stmt = $db->prepare("UPDATE productos SET cantidad = cantidad - ? WHERE id = ?");
         $stmt->bindValue(1, $item['cantidad'], SQLITE3_INTEGER);
         $stmt->bindValue(2, $item['id'], SQLITE3_INTEGER);
         $stmt->execute();
-    }   
     }
+}
 
 // Enviar email a Formspree
 // $url = "https://formspree.io/f/myzwaoqk";
@@ -79,5 +79,3 @@ $_SESSION['total_compra'] = $_POST['total'];
 $_SESSION['carrito'] = [];
 header("Location: carrito.php?exito=1");
 exit;
-
-?>

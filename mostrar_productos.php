@@ -46,7 +46,7 @@ while ($producto = $resultado->fetchArray(SQLITE3_ASSOC)) {
             echo "    <div class='img-wrapper'>";
             echo "    <img src='$img' class='d-block w-100 img-carrusel' alt='Imagen del producto'>";
             if ($cucarda):
-            echo '<img src="' . $cucarda . '" class="cucarda" alt="Cucarda">';
+                echo '<img src="' . $cucarda . '" class="cucarda" alt="Cucarda">';
             endif;
             echo "    </div>";
             echo "    </div>";
@@ -79,4 +79,3 @@ while ($producto = $resultado->fetchArray(SQLITE3_ASSOC)) {
 }
 echo '</div>';
 echo '</div>';
-?>

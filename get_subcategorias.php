@@ -23,4 +23,3 @@ while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
 }
 
 echo json_encode($subcategorias);
-?>

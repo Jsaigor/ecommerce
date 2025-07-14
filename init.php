@@ -8,8 +8,10 @@ if (session_status() === PHP_SESSION_NONE) {
 define('DB_PATH', './TiendaDB.sqlite');
 
 // Conexión con SQLite3
-class TiendaDB extends SQLite3 {
-    function __construct() {
+class TiendaDB extends SQLite3
+{
+    function __construct()
+    {
         $this->open(DB_PATH);
     }
 }
@@ -47,4 +49,3 @@ $db->exec("CREATE TABLE IF NOT EXISTS usuarios (
     total REAL,
     fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )");
-?>

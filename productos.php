@@ -5,7 +5,7 @@ require 'menu.php';
 require 'footer.php';
 
 
-    //-- Vista de los productos por Item_Id -->
+//-- Vista de los productos por Item_Id -->
 if (isset($_GET['item_id'])) {
     $item_id = (int) $_GET['item_id'];
 
@@ -31,7 +31,6 @@ if (isset($_GET['item_id'])) {
         $stmtProd = $db->prepare("SELECT * FROM productos WHERE item_id = :item_id");
         $stmtProd->bindValue(':item_id', $item_id, SQLITE3_INTEGER);
         $result = $stmtProd->execute();
-
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -39,67 +38,74 @@ if (isset($_GET['item_id'])) {
 ?>
     <!DOCTYPE html>
     <html lang="es">
+
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
-        <title><?= isset($ruta['item']) ? htmlspecialchars($ruta['item']) : 'Producto' ?></title>
+        <title>Electro'STORE</title>
         <link rel="icon" href="./img/icon4.png">
         <link rel="stylesheet" href="./css/estilo_v3.css">
         <link rel="stylesheet" href="./css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link href="css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="./css/aos.css">
         <link rel='stylesheet' href="./css/uicons-brands.css">
-        <script src="./js/bootstrap.bundle.min.js"></script>
     </head>
+
     <body>
-    <?php menu(); ?>
-    <main class="main-main">
-        <div class="container mt-5">
-            <h4 class="mb-4">:<?php if ($ruta) {
-            echo ": " . 
-                htmlspecialchars($ruta['categoria']) . "\\" .
-                htmlspecialchars($ruta['subcategoria']) . "\\" .
-                htmlspecialchars($ruta['item']) . "</strong></h4>";
-        } else {
-            echo "<p>No se encontró la ruta para este item_id.</p>"; } ?></h4>
-            <div class="row">
-                <?php while ($prod = $result->fetchArray(SQLITE3_ASSOC)) : ?>
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100 shadow-sm">
-                            <?php
-                            $cucarda = !empty($prod['imagen4']) ? htmlspecialchars($prod['imagen4']) : null;
-                            for ($i = 1; $i <= 3; $i++) {
-                                if (!empty($prod["imagen$i"])) {
-                                    echo '<img src="' . htmlspecialchars($prod["imagen$i"]) . '" class="card-img-top" alt="imagen">';
-                                    break;
+        <?php menu(); ?>
+        <main class="main-main">
+            <div class="container mt-5">
+                <h4 class="mb-4">:<?php if ($ruta) {
+                                        echo ": " .
+                                            htmlspecialchars($ruta['categoria']) . "\\" .
+                                            htmlspecialchars($ruta['subcategoria']) . "\\" .
+                                            htmlspecialchars($ruta['item']) . "</strong></h4>";
+                                    } else {
+                                        echo "<p>No se encontró la ruta para este item_id.</p>";
+                                    } ?></h4>
+                <div class="row">
+                    <?php while ($prod = $result->fetchArray(SQLITE3_ASSOC)) : ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <?php
+                                $cucarda = !empty($prod['imagen4']) ? htmlspecialchars($prod['imagen4']) : null;
+                                for ($i = 1; $i <= 3; $i++) {
+                                    if (!empty($prod["imagen$i"])) {
+                                        echo '<img src="' . htmlspecialchars($prod["imagen$i"]) . '" class="card-img-top" alt="imagen">';
+                                        break;
+                                    }
                                 }
-                            }
-                            if ($cucarda){
-                                echo '<img src="' . htmlspecialchars($cucarda) . '" class="cucarda" alt="Cucarda"> ';
-                            }
-                            ?>
-                            
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title"><?= htmlspecialchars($prod['nombre']) ?></h5>
-                                <p class="card-text"><?= nl2br(htmlspecialchars($prod['descripcion'])) ?></p>
-                            <div class="mt-auto">
-                                <p class="text-primary fw-bold">$<?= number_format($prod['precio'], 2) ?></p>
-                                <a href="productos.php?id=<?= $prod['id'] ?>" class="btn btn-primary">Ver detalle</a>
-                                <form method="POST" action="carrito.php">
-                                <input type="hidden" name="id" value="<?= $prod['id'] ?>">
-                                <button type="submit" class="btn btn-outline-primary w-100 mt-2 add-to-cart-btn">🛒 Agregar al carrito</button>
-                                </form>
-                            </div>
+                                if ($cucarda) {
+                                    echo '<img src="' . htmlspecialchars($cucarda) . '" class="cucarda" alt="Cucarda"> ';
+                                }
+                                ?>
+
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title"><?= htmlspecialchars($prod['nombre']) ?></h5>
+                                    <p class="card-text"><?= nl2br(htmlspecialchars($prod['descripcion'])) ?></p>
+                                    <div class="mt-auto">
+                                        <p class="text-primary fw-bold">$<?= number_format($prod['precio'], 2) ?></p>
+                                        <a href="productos.php?id=<?= $prod['id'] ?>" class="btn btn-primary">Ver detalle</a>
+                                        <form method="POST" action="carrito.php">
+                                            <input type="hidden" name="id" value="<?= $prod['id'] ?>">
+                                            <button type="submit" class="btn btn-outline-primary w-100 mt-2 add-to-cart-btn">🛒 Agregar al carrito</button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endwhile; ?>
-        </div>
-    </main>
-    <hr>
-    <?php footer(); ?>
+                    <?php endwhile; ?>
+                </div>
+        </main>
+        <hr>
+        <?php footer(); ?>
     </body>
+
     </html>
-    <?php exit;
-    
+<?php exit;
 }
 
 // Vista de los productos por Id
@@ -130,7 +136,6 @@ if (isset($_GET['id'])) {
         $stmtProd = $db->prepare("SELECT * FROM productos WHERE id = :id");
         $stmtProd->bindValue(':id', $id, SQLITE3_INTEGER);
         $result = $stmtProd->execute();
-
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }
@@ -138,97 +143,104 @@ if (isset($_GET['id'])) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title><?= isset($ruta['item']) ? htmlspecialchars($ruta['item']) : 'Producto' ?></title>
+    <title>Electro'STORE</title>
     <link rel="icon" href="./img/icon4.png">
     <link rel="stylesheet" href="./css/estilo_v3.css">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/aos.css">
     <link rel='stylesheet' href="./css/uicons-brands.css">
-    <script src="./js/bootstrap.bundle.min.js"></script>
 </head>
+
 <body>
-<?php menu(); ?>
-<hr>
-<main class="main-main">
-    <div class="container mt-5">
-    <h4 class="mb-4">:<?php if ($ruta) {
-        echo ": " . 
-                htmlspecialchars($ruta['categoria']) . "\\" .
-                htmlspecialchars($ruta['subcategoria']) . "\\" .
-                htmlspecialchars($ruta['item']) . "</strong></h4>";
-        } else {
-            echo "<p>No se encontró información del producto seleccionado.</p>"; } ?></h4>
-    <div class="row">
-        <?php while ($prod = $result->fetchArray(SQLITE3_ASSOC)) : ?>
-<div class="col-12 mb-4">
-    <div class="card h-100 shadow-sm">
-        <?php
-        // Recolectar imágenes válidas
-        $imagenes = [];
-        for ($i = 1; $i <= 3; $i++) {
-            if (!empty($prod["imagen$i"])) {
-                $imagenes[] = htmlspecialchars($prod["imagen$i"]);
-            }
-        }
-        $cucarda = !empty($prod['imagen4']) ? htmlspecialchars($prod['imagen4']) : null;
-        // Carrusel con más de una imagen
-        if (count($imagenes) > 1): 
-            $carouselId = "carousel" . $prod['id'];
-        ?>
-            <div id="<?= $carouselId ?>" class="carousel slide" data-bs-ride="carousel">
-                <!-- Indicadores -->
-                <div class="carousel-indicators">
-                    <?php foreach ($imagenes as $index => $img): ?>
-                        <button type="button" data-bs-target="#<?= $carouselId ?>" data-bs-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>" aria-current="<?= $index === 0 ? 'true' : 'false' ?>" aria-label="Imagen <?= $index + 1 ?>"></button>
-                    <?php endforeach; ?>
-                </div>
+    <?php menu(); ?>
+    <hr>
+    <main class="main-main">
+        <div class="container mt-5">
+            <h4 class="mb-4">:<?php if ($ruta) {
+                                    echo ": " .
+                                        htmlspecialchars($ruta['categoria']) . "\\" .
+                                        htmlspecialchars($ruta['subcategoria']) . "\\" .
+                                        htmlspecialchars($ruta['item']) . "</strong></h4>";
+                                } else {
+                                    echo "<p>No se encontró información del producto seleccionado.</p>";
+                                } ?></h4>
+            <div class="row">
+                <?php while ($prod = $result->fetchArray(SQLITE3_ASSOC)) : ?>
+                    <div class="col-12 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <?php
+                            // Recolectar imágenes válidas
+                            $imagenes = [];
+                            for ($i = 1; $i <= 3; $i++) {
+                                if (!empty($prod["imagen$i"])) {
+                                    $imagenes[] = htmlspecialchars($prod["imagen$i"]);
+                                }
+                            }
+                            $cucarda = !empty($prod['imagen4']) ? htmlspecialchars($prod['imagen4']) : null;
+                            // Carrusel con más de una imagen
+                            if (count($imagenes) > 1):
+                                $carouselId = "carousel" . $prod['id'];
+                            ?>
+                                <div id="<?= $carouselId ?>" class="carousel slide" data-bs-ride="carousel">
+                                    <!-- Indicadores -->
+                                    <div class="carousel-indicators">
+                                        <?php foreach ($imagenes as $index => $img): ?>
+                                            <button type="button" data-bs-target="#<?= $carouselId ?>" data-bs-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>" aria-current="<?= $index === 0 ? 'true' : 'false' ?>" aria-label="Imagen <?= $index + 1 ?>"></button>
+                                        <?php endforeach; ?>
+                                    </div>
 
-                <!-- Imágenes -->
-                <div class="carousel-inner">
-                    <?php foreach ($imagenes as $index => $img): ?>
-                    <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                    <img src="<?= $img ?>" class="carousel-img zoom-hover" alt="imagen">
-                    <?php if ($cucarda): ?>
-                    <img src="<?= $cucarda ?>" class="cucarda" alt="Cucarda">
-                    <?php endif; ?>
+                                    <!-- Imágenes -->
+                                    <div class="carousel-inner">
+                                        <?php foreach ($imagenes as $index => $img): ?>
+                                            <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                                                <img src="<?= $img ?>" class="carousel-img zoom-hover" alt="imagen">
+                                                <?php if ($cucarda): ?>
+                                                    <img src="<?= $cucarda ?>" class="cucarda" alt="Cucarda">
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+
+                                    <!-- Controles -->
+                                    <button class="carousel-control-prev" type="button" data-bs-target="#<?= $carouselId ?>" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Anterior</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button" data-bs-target="#<?= $carouselId ?>" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Siguiente</span>
+                                    </button>
+                                </div>
+                            <?php elseif (count($imagenes) === 1): ?>
+                                <img src="<?= $imagenes[0] ?>" class="carousel-img zoom-hover" alt="imagen">
+                                <img src="<?= $cucarda ?>" class="cucarda" alt="Cucarda">
+                            <?php endif; ?>
+
+                            <div class="card-body">
+                                <h5 class="card-title"><?= htmlspecialchars($prod['nombre']) ?></h5>
+                                <p class="card-text"><?= nl2br(htmlspecialchars($prod['descripcion'])) ?></p>
+                                <p class="text-primary fw-bold">$<?= number_format($prod['precio'], 2) ?></p>
+                                <form method="POST" action="carrito.php">
+                                    <input type="hidden" name="id" value="<?= $prod['id'] ?>">
+                                    <button type="submit" class="btn btn-outline-primary w-100 mt-2 add-to-cart-btn">🛒 Agregar al carrito</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <?php endforeach; ?>
-                </div>
 
-                <!-- Controles -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#<?= $carouselId ?>" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Anterior</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#<?= $carouselId ?>" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Siguiente</span>
-                </button>
+                <?php endwhile; ?>
             </div>
-        <?php elseif (count($imagenes) === 1): ?>
-            <img src="<?= $imagenes[0] ?>" class="carousel-img zoom-hover" alt="imagen">
-            <img src="<?= $cucarda ?>" class="cucarda" alt="Cucarda">
-        <?php endif; ?>
-
-        <div class="card-body">
-            <h5 class="card-title"><?= htmlspecialchars($prod['nombre']) ?></h5>
-            <p class="card-text"><?= nl2br(htmlspecialchars($prod['descripcion'])) ?></p>
-            <p class="text-primary fw-bold">$<?= number_format($prod['precio'], 2) ?></p>
-            <form method="POST" action="carrito.php">
-            <input type="hidden" name="id" value="<?= $prod['id'] ?>">
-            <button type="submit" class="btn btn-outline-primary w-100 mt-2 add-to-cart-btn">🛒 Agregar al carrito</button>
-            </form>
         </div>
-    </div>
-</div>
-
-    <?php endwhile; ?>
-    </div>
-</div>
-</main>
-<script>
+    </main>
+    <!-- <script>
     document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
     btn.addEventListener('click', () => {
     const icono = document.getElementById('carritoIcono');
@@ -236,8 +248,11 @@ if (isset($_GET['id'])) {
     setTimeout(() => icono.classList.remove('cart-animate'), 500);
     });
 });
-</script>
-<hr>
-<?php footer(); ?>
+</script> -->
+    <hr>
+    <?php footer(); ?>
+    <script src="./js/items.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
