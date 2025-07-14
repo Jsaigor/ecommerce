@@ -65,17 +65,22 @@ if (isset($_GET['item_id'])) {
                     <div class="col-md-4 mb-4">
                         <div class="card h-100 shadow-sm">
                             <?php
+                            $cucarda = !empty($prod['imagen4']) ? htmlspecialchars($prod['imagen4']) : null;
                             for ($i = 1; $i <= 3; $i++) {
                                 if (!empty($prod["imagen$i"])) {
                                     echo '<img src="' . htmlspecialchars($prod["imagen$i"]) . '" class="card-img-top" alt="imagen">';
                                     break;
                                 }
                             }
-                            $cucarda = !empty($prod['imagen4']) ? htmlspecialchars($prod['imagen4']) : null;
+                            if ($cucarda){
+                                echo '<img src="' . htmlspecialchars($cucarda) . '" class="cucarda" alt="Cucarda"> ';
+                            }
                             ?>
-                            <div class="card-body">
+                            
+                            <div class="card-body d-flex flex-column">
                                 <h5 class="card-title"><?= htmlspecialchars($prod['nombre']) ?></h5>
                                 <p class="card-text"><?= nl2br(htmlspecialchars($prod['descripcion'])) ?></p>
+                            <div class="mt-auto">
                                 <p class="text-primary fw-bold">$<?= number_format($prod['precio'], 2) ?></p>
                                 <a href="productos.php?id=<?= $prod['id'] ?>" class="btn btn-primary">Ver detalle</a>
                                 <form method="POST" action="carrito.php">
@@ -83,10 +88,10 @@ if (isset($_GET['item_id'])) {
                                 <button type="submit" class="btn btn-outline-primary w-100 mt-2 add-to-cart-btn">🛒 Agregar al carrito</button>
                                 </form>
                             </div>
+                            </div>
                         </div>
                     </div>
                 <?php endwhile; ?>
-            </div>
         </div>
     </main>
     <hr>
@@ -181,7 +186,7 @@ if (isset($_GET['id'])) {
                 </div>
 
                 <!-- Imágenes -->
-                <div class="carousel-inner2">
+                <div class="carousel-inner">
                     <?php foreach ($imagenes as $index => $img): ?>
                     <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
                     <img src="<?= $img ?>" class="carousel-img zoom-hover" alt="imagen">

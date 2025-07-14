@@ -1,5 +1,6 @@
-<?php require 'menu.php';
-require 'footer.php';
+<?php 
+    require 'menu.php';
+    require 'footer.php';
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +29,7 @@ require 'footer.php';
         <div class="d-flex justify-content-center mt-4">
             <div id="carouselClientes" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner" id="carouselContenido">
-                    <!-- Slides se cargan aquí con JS -->
+                    <!-- Slides se cargan acá con JS -->
                 </div>
 
                 <!-- Botones -->
@@ -45,9 +46,10 @@ require 'footer.php';
     </section>
     <footer>
         <?php footer(); ?>
+    </footer>
+        <script src="./js/items.js"></script>
         <script src="./js/bootstrap.bundle.min.js"></script>
         <script src="./js/resenias.js"> </script>
-    </footer>
 </body>
 
 </html>

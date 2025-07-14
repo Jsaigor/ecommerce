@@ -61,7 +61,7 @@ require 'footer.php';
 <hr>
 <h2>Productos disponibles</h2>
 <?php include 'mostrar_productos.php'; ?>
-<script src="./js/carrito.js"></script>
+<!-- <script src="./js/carrito.js"></script> -->
 <script src="./js/items.js"></script>
 <script src="./js/bootstrap.bundle.min.js"></script>
 </main>

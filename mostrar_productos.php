@@ -38,7 +38,7 @@ while ($producto = $resultado->fetchArray(SQLITE3_ASSOC)) {
     if (!empty($imagenes)) {
         $carouselId = "carousel$item_id";
         echo "<div id='$carouselId' class='carousel slide' data-bs-ride='carousel'>";
-        echo '  <div class="carousel-inner1">';
+        echo '  <div class="carousel-inner">';
         shuffle($imagenes); // Orden aleatorio de los registros del array
         foreach ($imagenes as $index => $img) {
             $active = $index === 0 ? 'active' : '';

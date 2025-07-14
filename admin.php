@@ -123,7 +123,6 @@ try {
     </div>
     </div>
     </div>
-
 <script>
 document.getElementById('categoria').addEventListener('change', function() {
     fetch('get_subcategorias.php?categoria_id=' + this.value)
@@ -171,6 +170,8 @@ document.getElementById('mod_subcategoria').addEventListener('change', function(
         });
 });
 </script>
+<script src="./js/items.js"></script>
+<script src="./js/bootstrap.bundle.min.js"></script>
 </main>
 <hr>
 <?php footer(); ?>

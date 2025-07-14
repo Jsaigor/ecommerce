@@ -125,7 +125,8 @@ while ($fila = $resultado->fetchArray(SQLITE3_ASSOC)) {
 
 <!-- Cargamos el script de Google Maps con tu API Key -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbI7X0U7EINMmkc-pvdgYNdao1557EUaQ&callback=initMap&loading=async&libraries=marker" async defer></script>
-
+    <script src="./js/items.js"></script>
+    <script src="./js/bootstrap.bundle.min.js"></script>
 </main>
 <hr>
 <?php footer(); ?>

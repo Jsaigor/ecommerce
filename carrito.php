@@ -216,5 +216,6 @@ function descargarPDF() {
 <hr>
 <?php footer(); ?>
 <script src="./js/bootstrap.bundle.min.js"></script>
+<script src="./js/items.js"></script>
 </body>
 </html>

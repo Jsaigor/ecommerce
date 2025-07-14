@@ -308,20 +308,6 @@ textarea {
   background-color: #000;
 }
 
-.carousel-inner1 {
-  height: 400px; 
-  display: flex;
-  align-items: center;
-  background-color: #ffffff; 
-}
-
-.carousel-inner2 {
-  height: 400px; 
-  display: flex;
-  align-items: top;
-  background-color: #ffffff; 
-}
-
 .carousel-item {
   background-color: white;
   display: flex;
@@ -334,13 +320,6 @@ textarea {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.img-wrapper {
-  position: relative;
-  height: 300px;   
-  background-color: #f8f9fa;
-  overflow: hidden;
 }
 
 .img-carrusel {
@@ -374,4 +353,49 @@ textarea {
   padding: 1.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Fondo del menú desplegable */
+.dropdown-menu {
+  background: linear-gradient(to bottom, #216ba5, #2a93d5);
+  color: #000;
+  border: 1px solid #0d6efd;
+  border-radius: 8px;
+}
+
+/* Fondo interno más claro para contraste */
+.dropdown-menu li {
+  background-color: #e0f0ff;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+/* Estilo de los labels */
+.dropdown-menu label {
+  color: #1b1b1b;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Estilo de los selects */
+.dropdown-menu .form-select {
+  background-color: #d6eaff;
+  color: #000;
+  border-color: #0d6efd;
+}
+
+.img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 250px; /* o el alto que prefieras */
+  overflow: hidden;
+}
+
+.img-wrapper img.img-carrusel {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
