@@ -5,11 +5,8 @@ require 'menu.php';
 require 'footer.php';
 require 'carrito_funciones.php';
 
-    if (empty($_SESSION['carrito'])) {
-    echo "<p>El carrito está vacío.</p>";
-} else {
-    $db = new SQLite3('TiendaDB.sqlite');
-}
+$db = new SQLite3('TiendaDB.sqlite');
+
 
 // Si recibimos datos por POST, agregamos producto
  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
@@ -21,22 +18,6 @@ normalizarCarrito();
 
 // Obtenemos el carrito para mostrar
 $carrito = obtenerCarrito();
-
-// Agregar producto
-// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
-//     $id = (int) $_POST['id'];
-//     $encontrado = false;
-//     foreach ($_SESSION['carrito'] as &$item) {
-//         if ($item['id'] === $id) {
-//             $item['cantidad']++;
-//             $encontrado = true;
-//             break;
-//         }
-//     }
-//     if (!$encontrado) $_SESSION['carrito'][] = ['id' => $id, 'cantidad' => 1];
-//     header("Location: carrito.php");
-//     exit;
-// }
 
 // Eliminar producto
 if (isset($_GET['remove'])) {
@@ -158,12 +139,6 @@ session_write_close();
         <div class="col-md-8"><input type="text" name="direccion" class="form-control" placeholder="Dirección" required></div>
         <div class="col-md-4"><input type="text" name="cp" class="form-control" placeholder="Código Postal" required></div>
         <div class="col-md-12"><textarea name="Informacion" class="form-control" placeholder="Información extra para la entrega"></textarea></div>
-        <?php foreach ($_SESSION['carrito'] as $i => $item): ?>
-        <input type="hidden" name="productos[<?= $i ?>][id]" value="<?= $item['id'] ?>">
-        <input type="hidden" name="productos[<?= $i ?>][nombre]" value="<?= htmlspecialchars($item['nombre']) ?>">
-        <input type="hidden" name="productos[<?= $i ?>][precio]" value="<?= htmlspecialchars($item['precio']) ?>">
-        <input type="hidden" name="productos[<?= $i ?>][cantidad]" value="<?= htmlspecialchars($item['cantidad']) ?>">
-    <?php endforeach; ?>
         <div class="col-12"><button type="submit" name="finalizar" class="btn btn-success w-100">Finalizar compra</button></div>
     </form>
 </div>

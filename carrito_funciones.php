@@ -6,18 +6,44 @@ function iniciarCarrito() {
     }
 }
 
+// function agregarAlCarrito($idProducto, $cantidad = 1) {
+//     iniciarCarrito();
+
 function agregarAlCarrito($idProducto, $cantidad = 1) {
     iniciarCarrito();
 
-    // Si ya existe el producto, sumar cantidad
     foreach ($_SESSION['carrito'] as &$item) {
         if ($item['id'] == $idProducto) {
             $item['cantidad'] += $cantidad;
             return;
         }
     }
-    // Si no existe, agregarlo
-    $_SESSION['carrito'][] = ['id' => $idProducto, 'cantidad' => $cantidad];
+
+    // Consultar datos desde la DB
+    $db = new SQLite3('TiendaDB.sqlite');
+    $stmt = $db->prepare("SELECT nombre, precio FROM productos WHERE id = ?");
+    $stmt->bindValue(1, $idProducto, SQLITE3_INTEGER);
+    $result = $stmt->execute()->fetchArray(SQLITE3_ASSOC);
+
+    if ($result) {
+        $_SESSION['carrito'][] = [
+            'id' => $idProducto,
+            'nombre' => $result['nombre'],
+            'precio' => $result['precio'],
+            'cantidad' => $cantidad
+        ];
+    }
+
+
+    // // Si ya existe el producto, sumar cantidad
+    // foreach ($_SESSION['carrito'] as &$item) {
+    //     if ($item['id'] == $idProducto) {
+    //         $item['cantidad'] += $cantidad;
+    //         return;
+    //     }
+    // }
+    // // Si no existe, agregarlo
+    // $_SESSION['carrito'][] = ['id' => $idProducto, 'cantidad' => $cantidad];
 }
 
 function normalizarCarrito() {

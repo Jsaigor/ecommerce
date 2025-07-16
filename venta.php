@@ -35,6 +35,7 @@ $url = "https://formspree.io/f/myzwaoqk";
 $correo = $_POST['correo'];
 $nombre = $_POST['nombre'];
 $apellido = $_POST['apellido'];
+$total = $_POST['total'];
 
 function obtenerCarritoComoTexto() {
     $texto = "";
@@ -43,7 +44,8 @@ function obtenerCarritoComoTexto() {
             $producto['id'], 
             $producto['nombre'], 
             $producto['cantidad'], 
-            $producto['precio']);
+            $producto['precio'],
+            );
     }
     return $texto;
 }
@@ -52,7 +54,8 @@ $carritoTexto = obtenerCarritoComoTexto();
 
 $data = [
     'email' => $correo,
-    'message' => "Nuevo comprador: $nombre $apellido ($correo) compró:\n\n$carritoTexto"
+    'message' => "Nuevo comprador: $nombre $apellido ($correo) compró:\n\n$carritoTexto\n",
+    'Total de la compra:' => "$$total"
 ];
 
 $options = [
@@ -74,7 +77,7 @@ if ($result === FALSE) {
 $_SESSION['resumen'] = $_SESSION['carrito'];
 $_SESSION['total_compra'] = $_POST['total'];
 header("Location: carrito.php?exito=1");
-// Ahora sí: vaciar el carrito
+
 $_SESSION['carrito'] = [];
 
 exit;
