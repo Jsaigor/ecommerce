@@ -1,4 +1,4 @@
-Este es un proyecto para la preentrega de un trabajo final de un "Ecommerce" de una cadena ficticia de electrodomésticos (Electro'STORE) para el curso 25015 de Front End con JS de Talento Tech.
+Este es un proyecto para la entrega de un trabajo final de un "Ecommerce" de una cadena ficticia de electrodomésticos (Electro'STORE) para el curso 25015 de Front End con JS de Talento Tech.
 Como utilizo PHP no es posible ver la página funcional en GIT ó Netlify.app, si desean ver en FreeHosting en la dirección "http://javiersigot.com.preview.services/" con email/password "javier.sigot@gmail.com/J@vier1970"
 
 Posee una DB en SQLite con estas tablas:
@@ -9,7 +9,7 @@ CREATE TABLE subcategorias ( subcategory_id INTEGER PRIMARY KEY AUTOINCREMENT, c
 CREATE TABLE sucursales ( sucursal_id INTEGER PRIMARY KEY AUTOINCREMENT, direccion TEXT NOT NULL, codigo_postal TEXT, telefono TEXT, ciudad TEXT, provincia TEXT , latitud REAL, longitud REAL)
 CREATE TABLE usuarios ( id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, apellido TEXT, correo TEXT, telefono TEXT, direccion TEXT, cp TEXT, total REAL, fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP )
 
-Cuando se realiza una venta o alguien se suscribe se guardan los datos en la tabla "usuarios" y se envía a "Formspree" los datos ya sea a la "action" Ecommerce ó Suscripción según corresponda
+Cuando se realiza una venta o alguien se suscribe se guardan los datos en la tabla "usuarios" y se envía a "Formspree" los datos ya sea a la "action" Ecommerce ó Suscripción según corresponda (hay 2 cuentas en Formspree)
 
 PHP permite utilizar funciones en diferentes archivos, en este caso utilicé un "menu.php", "footer.php", "mostrar_productos.php", "get_categoria.php", "get_subcategoria.php" para llamar desde cualquier página, esto ayuda si es necesario realizar algún cambio hacerlo solo en uno de ellos e impacta en todas las páginas que llamen a estas funciones
 
