@@ -1,5 +1,4 @@
 <?php
-// Finalizar compra session_start();
 session_start();
 // Asegurarse de que el carrito esté definido
 $_SESSION['carrito'] = $_SESSION['carrito'] ?? [];
@@ -32,50 +31,50 @@ if (isset($_POST['finalizar'])) {
 }
 
 // Enviar email a Formspree
-// $url = "https://formspree.io/f/myzwaoqk";
-// $correo = $_POST['correo'];
-// $nombre = $_POST['nombre'];
-// $apellido = $_POST['apellido'];
+$url = "https://formspree.io/f/myzwaoqk";
+$correo = $_POST['correo'];
+$nombre = $_POST['nombre'];
+$apellido = $_POST['apellido'];
 
-// function obtenerCarritoComoTexto() {
-//     $texto = "";
-//     foreach ($_SESSION['carrito'] as $producto) {
-//         $texto .= sprintf("ID: %s - %s (%d x \$%.2f)\n", 
-//             $producto['id'], 
-//             $producto['nombre'], 
-//             $producto['cantidad'], 
-//             $producto['precio']);
-//     }
-//     return $texto;
-// }
+function obtenerCarritoComoTexto() {
+    $texto = "";
+    foreach ($_SESSION['carrito'] as $producto) {
+        $texto .= sprintf("ID: %s - %s (%d x \$%.2f)\n", 
+            $producto['id'], 
+            $producto['nombre'], 
+            $producto['cantidad'], 
+            $producto['precio']);
+    }
+    return $texto;
+}
 
-// $carritoTexto = obtenerCarritoComoTexto();
+$carritoTexto = obtenerCarritoComoTexto();
 
-// $data = [
-//     'email' => $correo,
-//     'message' => "Nuevo comprador: $nombre $apellido ($correo) compró:\n\n$carritoTexto"
-// ];
+$data = [
+    'email' => $correo,
+    'message' => "Nuevo comprador: $nombre $apellido ($correo) compró:\n\n$carritoTexto"
+];
 
-// $options = [
-//     'http' => [
-//         'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-//         'method'  => 'POST',
-//         'content' => http_build_query($data),
-//     ],
-// ];
+$options = [
+    'http' => [
+        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+        'method'  => 'POST',
+        'content' => http_build_query($data),
+    ],
+];
 
-// $context = stream_context_create($options);
-// $result = file_get_contents($url, false, $context);
+$context = stream_context_create($options);
+$result = file_get_contents($url, false, $context);
 
-// if ($result === FALSE) {
-//     error_log('Error al enviar email a Formspree');
-// }
+if ($result === FALSE) {
+    error_log('Error al enviar email a Formspree');
+}
 
 // Guardar el resumen antes de vaciar el carrito
 $_SESSION['resumen'] = $_SESSION['carrito'];
 $_SESSION['total_compra'] = $_POST['total'];
-
+header("Location: carrito.php?exito=1");
 // Ahora sí: vaciar el carrito
 $_SESSION['carrito'] = [];
-header("Location: carrito.php?exito=1");
+
 exit;

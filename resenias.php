@@ -1,4 +1,5 @@
 <?php
+session_start();
 require 'menu.php';
 require 'footer.php';
 ?>
