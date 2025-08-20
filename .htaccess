@@ -1,0 +1,7 @@
+# Archivo .htaccess limpio sin autenticación
+# Habilita funciones básicas si querés mantener algunas reglas
+
+# Opcional: habilitar la compresión o reescrituras si usás PHP moderno
+# AddDefaultCharset UTF-8
+# Options +FollowSymLinks
+# RewriteEngine On
