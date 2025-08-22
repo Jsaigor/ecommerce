@@ -314,19 +314,55 @@ resultadosEliminacionDiv.addEventListener('click', function(event) {
                 body: `id=${productoId}`
             })
             .then(response => response.json()) // Esperamos una respuesta JSON del servidor
+            // --- CÓDIGO NUEVO ---
             .then(data => {
+                const modalEl = document.getElementById('notificacionModal');
+                const modal = new bootstrap.Modal(modalEl);
+                const modalMensaje = document.getElementById('modalMensaje');
+
                 if (data.status === 'success') {
-                    // Eliminar el elemento de la lista sin recargar la página
-                    document.getElementById(`producto-item-${productoId}`).remove();
-                    // Mostrar mensaje de éxito
-                    mensajeEliminacionDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
-                } else {
-                    mensajeEliminacionDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
-                }
-                // Ocultar el mensaje después de 3 segundos
-                setTimeout(() => { mensajeEliminacionDiv.innerHTML = ''; }, 3000);
-            });
+                // Eliminar el elemento de la lista visualmente
+                document.getElementById(`producto-item-${productoId}`).remove();
+        
+                // Preparar y mostrar el modal de éxito
+                modalMensaje.textContent = "Producto eliminado correctamente.";
+                modal.show();
+            } else {
+            // Si hay un error, lo mostramos en un modal también (opcional pero consistente)
+            modalMensaje.textContent = data.message || "Ocurrió un error al eliminar el producto.";
+            // podrías cambiar el título a "Error" si quisieras
+            modal.show();
+            }
+        });
         }
+    }
+});
+
+// --- CÓDIGO NUEVO PARA MOSTRAR EL MODAL AL CARGAR LA PÁGINA ---
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
+    const action = urlParams.get('action');
+
+    if (status === 'success') {
+        const modalEl = document.getElementById('notificacionModal');
+        const modal = new bootstrap.Modal(modalEl);
+        const modalMensaje = document.getElementById('modalMensaje');
+        
+        let mensaje = '';
+        if (action === 'add') {
+            mensaje = 'Producto agregado correctamente.';
+        } else if (action === 'modify') {
+            mensaje = 'Producto modificado correctamente.';
+        }
+        
+        if (mensaje) {
+            modalMensaje.textContent = mensaje;
+            modal.show();
+        }
+        
+        // Limpia la URL para que el modal no reaparezca si se recarga la página
+        window.history.replaceState({}, document.title, window.location.pathname);
     }
 });
 
@@ -336,5 +372,23 @@ resultadosEliminacionDiv.addEventListener('click', function(event) {
 </main>
 <hr>
 <?php footer(); ?>
+
+<div class="modal fade" id="notificacionModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="modalTitulo"><i class="fas fa-check-circle text-success me-2"></i>Éxito</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        <p id="modalMensaje">La operación se realizó correctamente.</p>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendido</button>
+        </div>
+    </div>
+    </div>
+</div>
+
 </body>
 </html>

@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt->execute()) {
             // Redirige de vuelta con un mensaje de éxito
-            header('Location: admin.php?msg=Producto_modificado_exitosamente');
+            header('Location: admin.php?status=success&action=modify');
             exit;
         } else {
             echo 'Error al modificar el producto.';
