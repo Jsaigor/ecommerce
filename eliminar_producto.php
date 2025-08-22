@@ -1,25 +1,31 @@
 <?php
-// Conexión a la base de datos
-$db = new SQLite3('TiendaDB.sqlite');
+// Establece la cabecera para devolver una respuesta JSON
+header('Content-Type: application/json');
 
-include 'init.php'; // Conexión con la base de datos SQLite
+// La conexión se podría incluir en un archivo separado como init.php o conexion.php
+try {
+    $db = new SQLite3('TiendaDB.sqlite');
+    $db->enableExceptions(true);
+} catch (Exception $e) {
+    echo json_encode(['status' => 'error', 'message' => 'Error al conectar a la base de datos.']);
+    exit;
+}
 
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+// Usamos POST para recibir el ID, es más seguro para operaciones de borrado
+if (isset($_POST['id'])) {
+    $id = (int)$_POST['id'];
 
-    // Preparar la sentencia DELETE
     $stmt = $db->prepare('DELETE FROM productos WHERE id = :id');
     $stmt->bindValue(':id', $id, SQLITE3_INTEGER);
+    $stmt->execute();
 
-    $result = $stmt->execute();
-
+    // $db->changes() devuelve el número de filas afectadas. Si es > 0, se borró.
     if ($db->changes() > 0) {
-        echo "<p style='color: green;'>✅ Producto eliminado correctamente.</p>";
+        echo json_encode(['status' => 'success', 'message' => "✅ Producto con ID {$id} eliminado correctamente."]);
     } else {
-        echo "<p style='color: orange;'>⚠️ No se encontró un producto con ese ID.</p>";
+        echo json_encode(['status' => 'error', 'message' => "⚠️ No se encontró un producto con el ID {$id}."]);
     }
 } else {
-    echo "<p style='color: red;'>❌ ID de producto no proporcionado.</p>";
+    echo json_encode(['status' => 'error', 'message' => '❌ No se proporcionó un ID de producto.']);
 }
 ?>
-

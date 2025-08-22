@@ -123,15 +123,47 @@ try {
     </div>
 </div>
     <hr>
-    <div class="card">
-        <div class="card-header"><h2>Eliminar Producto</h2></div>
-        <div class="card-body">
-            <form action="eliminar_producto.php" method="POST">
-                <input type="number" name="producto_id" class="form-control" placeholder="ID del producto a eliminar" required>
-                <button type="submit" class="btn btn-danger">Eliminar Producto</button>
-            </form>
+<div class="card">
+    <div class="card-header"><h2>Eliminar Producto</h2></div>
+    <div class="card-body">
+        <p class="form-text">Usa los menús para encontrar los productos que deseas eliminar.</p>
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label for="elim_categoria" class="form-label">Categoría</label>
+                <select id="elim_categoria" class="form-select">
+                    <option value="">Seleccionar...</option>
+                    <?php
+                    // Reutilizamos la consulta de categorías
+                    $categorias_elim = $db->query("SELECT * FROM categorias ORDER BY nombre");
+                    while ($c = $categorias_elim->fetchArray(SQLITE3_ASSOC)):
+                    ?>
+                        <option value="<?= htmlspecialchars($c['category_id']) ?>"><?= htmlspecialchars($c['nombre']) ?></option>
+                    <?php endwhile; ?>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="elim_subcategoria" class="form-label">Subcategoría</label>
+                <select id="elim_subcategoria" class="form-select">
+                    <option value="">Seleccionar...</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="elim_item" class="form-label">Ítem</label>
+                <select id="elim_item" class="form-select">
+                    <option value="">Seleccionar...</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="button" id="btn-buscar-para-eliminar" class="btn btn-info w-100">Buscar Productos</button>
+            </div>
+        </div>
+        <hr>
+        <div id="mensaje-eliminacion"></div>
+        <div id="resultados-eliminacion">
+            <p class="text-center text-muted">Aquí aparecerá la lista de productos a eliminar.</p>
         </div>
     </div>
+</div>
     </div>
     </div>
 <script>
@@ -186,8 +218,6 @@ document.getElementById('mod_subcategoria').addEventListener('change', function(
         });
 });
 
-// --- AÑADE ESTE CÓDIGO AL FINAL DE TU ETIQUETA <script> ---
-
 // Lógica para el botón de BÚSQUEDA de productos a modificar
 document.getElementById('btn-buscar-productos').addEventListener('click', function() {
     const itemId = document.getElementById('mod_item').value;
@@ -212,6 +242,92 @@ document.getElementById('btn-buscar-productos').addEventListener('click', functi
             console.error('Error al buscar productos:', error);
             resultadosDiv.innerHTML = '<p class="text-danger text-center">Ocurrió un error al realizar la búsqueda.</p>';
         });
+});
+
+// --- CÓDIGO NUEVO PARA LA SECCIÓN DE ELIMINAR PRODUCTO ---
+
+const elimCategoriaSelect = document.getElementById('elim_categoria');
+const elimSubcategoriaSelect = document.getElementById('elim_subcategoria');
+const elimItemSelect = document.getElementById('elim_item');
+const resultadosEliminacionDiv = document.getElementById('resultados-eliminacion');
+const mensajeEliminacionDiv = document.getElementById('mensaje-eliminacion');
+
+// Lógica para los menús desplegables de la sección Eliminar
+elimCategoriaSelect.addEventListener('change', function() {
+    const categoriaId = this.value;
+    elimSubcategoriaSelect.innerHTML = '<option value="">Cargando...</option>';
+    elimItemSelect.innerHTML = '<option value="">Seleccionar ítem</option>';
+    if (categoriaId) {
+        fetch(`get_subcategorias.php?categoria_id=${categoriaId}`)
+            .then(res => res.json()).then(data => {
+                let options = '<option value="">Seleccionar subcategoría</option>';
+                data.forEach(sc => { options += `<option value="${sc.subcategory_id}">${sc.nombre}</option>`; });
+                elimSubcategoriaSelect.innerHTML = options;
+            });
+    } else {
+        elimSubcategoriaSelect.innerHTML = '<option value="">Seleccionar subcategoría</option>';
+    }
+});
+
+elimSubcategoriaSelect.addEventListener('change', function() {
+    const subcategoriaId = this.value;
+    elimItemSelect.innerHTML = '<option value="">Cargando...</option>';
+    if (subcategoriaId) {
+        fetch(`get_items.php?subcategoria_id=${subcategoriaId}`)
+            .then(res => res.json()).then(data => {
+                let options = '<option value="">Seleccionar ítem</option>';
+                data.forEach(p => { options += `<option value="${p.item_id}">${p.nombre}</option>`; });
+                elimItemSelect.innerHTML = options;
+            });
+    } else {
+        elimItemSelect.innerHTML = '<option value="">Seleccionar ítem</option>';
+    }
+});
+
+// Lógica para el botón de BÚSQUEDA de productos a eliminar
+document.getElementById('btn-buscar-para-eliminar').addEventListener('click', function() {
+    const itemId = elimItemSelect.value;
+    if (!itemId) {
+        alert('Por favor, seleccione un ítem para buscar.');
+        return;
+    }
+    resultadosEliminacionDiv.innerHTML = '<p class="text-center">Buscando...</p>';
+    fetch(`buscar_productos_para_eliminar.php?item_id=${itemId}`)
+        .then(response => response.text())
+        .then(html => {
+            resultadosEliminacionDiv.innerHTML = html;
+        });
+});
+
+// Lógica para la ELIMINACIÓN con AJAX (sin recargar página)
+resultadosEliminacionDiv.addEventListener('click', function(event) {
+    // Se activa solo si se hace clic en un botón con la clase 'btn-eliminar'
+    if (event.target.classList.contains('btn-eliminar')) {
+        const productoId = event.target.dataset.id;
+        const productoNombre = event.target.dataset.nombre;
+        
+        if (confirm(`¿Estás seguro de que deseas eliminar el producto "${productoNombre}" (ID: ${productoId})?`)) {
+            // Usamos POST para la eliminación
+            fetch('eliminar_producto.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `id=${productoId}`
+            })
+            .then(response => response.json()) // Esperamos una respuesta JSON del servidor
+            .then(data => {
+                if (data.status === 'success') {
+                    // Eliminar el elemento de la lista sin recargar la página
+                    document.getElementById(`producto-item-${productoId}`).remove();
+                    // Mostrar mensaje de éxito
+                    mensajeEliminacionDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                } else {
+                    mensajeEliminacionDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                }
+                // Ocultar el mensaje después de 3 segundos
+                setTimeout(() => { mensajeEliminacionDiv.innerHTML = ''; }, 3000);
+            });
+        }
+    }
 });
 
 </script>
