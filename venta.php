@@ -1,61 +1,66 @@
 <?php
 session_start();
-// Asegurarse de que el carrito esté definido
-$_SESSION['carrito'] = $_SESSION['carrito'] ?? [];
 
-$db = new SQLite3('TiendaDB.sqlite');
+// Validar que la solicitud sea POST y que el carrito no esté vacío
+if ($_SERVER['REQUEST_METHOD'] !== 'POST' || empty($_SESSION['carrito'])) {
+    // Si no es POST o el carrito está vacío, redirigir al inicio.
+    header("Location: index.php");
+    exit;
+}
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nombre'], $_POST['apellido'], $_POST['correo'], $_POST['telefono'], $_POST['direccion'], $_POST['cp'], $_POST['total'])) {
-    $stmt = $db->prepare("INSERT INTO usuarios (nombre, apellido, correo, telefono, direccion, cp, total) 
-    VALUES (:nombre, :apellido, :correo, :telefono, :direccion, :cp, :total)");
+// Conexión a la base de datos
+try {
+    $db = new SQLite3('TiendaDB.sqlite');
+    $db->enableExceptions(true);
+} catch (Exception $e) {
+    // Manejar error de conexión
+    error_log("Error de conexión a la base de datos: " . $e->getMessage());
+    // Podrías redirigir a una página de error para el usuario
+    die("Hubo un problema al procesar tu pedido. Por favor, intenta más tarde.");
+}
 
-    $stmt->bindValue(':nombre', $_POST['nombre'], SQLITE3_TEXT);
-    $stmt->bindValue(':apellido', $_POST['apellido'], SQLITE3_TEXT);
-    $stmt->bindValue(':correo', $_POST['correo'], SQLITE3_TEXT);
-    $stmt->bindValue(':telefono', $_POST['telefono'], SQLITE3_TEXT);
-    $stmt->bindValue(':direccion', $_POST['direccion'], SQLITE3_TEXT);
-    $stmt->bindValue(':cp', $_POST['cp'], SQLITE3_TEXT);
-    $stmt->bindValue(':total', $_POST['total'], SQLITE3_FLOAT);
+// ---- PASO 1: GUARDAR DATOS DEL COMPRADOR ----
+$stmt = $db->prepare("INSERT INTO usuarios (nombre, apellido, correo, telefono, direccion, cp, total) 
+                    VALUES (:nombre, :apellido, :correo, :telefono, :direccion, :cp, :total)");
 
+$stmt->bindValue(':nombre', $_POST['nombre'], SQLITE3_TEXT);
+$stmt->bindValue(':apellido', $_POST['apellido'], SQLITE3_TEXT);
+$stmt->bindValue(':correo', $_POST['correo'], SQLITE3_TEXT);
+$stmt->bindValue(':telefono', $_POST['telefono'], SQLITE3_TEXT);
+$stmt->bindValue(':direccion', $_POST['direccion'], SQLITE3_TEXT);
+$stmt->bindValue(':cp', $_POST['cp'], SQLITE3_TEXT);
+$stmt->bindValue(':total', (float)$_POST['total'], SQLITE3_FLOAT);
+$stmt->execute();
+
+
+// ---- PASO 2: ACTUALIZAR EL STOCK DE PRODUCTOS ----
+foreach ($_SESSION['carrito'] as $item) {
+    $stmt = $db->prepare("UPDATE productos SET cantidad = cantidad - :cantidad WHERE id = :id");
+    $stmt->bindValue(':cantidad', $item['cantidad'], SQLITE3_INTEGER);
+    $stmt->bindValue(':id', $item['id'], SQLITE3_INTEGER);
     $stmt->execute();
 }
 
-// Actualización de cantidades en la tabla productos
-if (isset($_POST['finalizar'])) {
-    foreach ($_SESSION['carrito'] as $id => $item) {
-        $stmt = $db->prepare("UPDATE productos SET cantidad = cantidad - ? WHERE id = ?");
-        $stmt->bindValue(1, $item['cantidad'], SQLITE3_INTEGER);
-        $stmt->bindValue(2, $item['id'], SQLITE3_INTEGER);
-        $stmt->execute();
-    }
-}
 
-// Enviar email a Formspree
-$url = "https://formspree.io/f/myzwaoqk";
-$correo = $_POST['correo'];
-$nombre = $_POST['nombre'];
-$apellido = $_POST['apellido'];
-$total = $_POST['total'];
-
+// ---- PASO 3: ENVIAR CORREO DE NOTIFICACIÓN (FORMSPREE) ----
 function obtenerCarritoComoTexto() {
     $texto = "";
     foreach ($_SESSION['carrito'] as $producto) {
-        $texto .= sprintf("ID: %s - %s (%d x \$%.2f)\n", 
-            $producto['id'], 
-            $producto['nombre'], 
-            $producto['cantidad'], 
-            $producto['precio'],
-            );
+        $texto .= sprintf(
+            "ID: %s - %s (%d x $%.2f)\n",
+            $producto['id'],
+            $producto['nombre'],
+            $producto['cantidad'],
+            $producto['precio']
+        );
     }
     return $texto;
 }
 
-$carritoTexto = obtenerCarritoComoTexto();
-
 $data = [
-    'email' => $correo,
-    'message' => "Nuevo comprador: $nombre $apellido ($correo) compró:\n\n$carritoTexto\n",
-    'Total de la compra:' => "$$total"
+    'email'   => $_POST['correo'],
+    'message' => "Nuevo comprador: {$_POST['nombre']} {$_POST['apellido']} ({$_POST['correo']}) compró:\n\n" . obtenerCarritoComoTexto(),
+    'Total de la compra:' => '$' . $_POST['total']
 ];
 
 $options = [
@@ -65,19 +70,19 @@ $options = [
         'content' => http_build_query($data),
     ],
 ];
-
 $context = stream_context_create($options);
-$result = file_get_contents($url, false, $context);
+@file_get_contents("https://formspree.io/f/myzwaoqk", false, $context); // Usamos @ para suprimir warnings si falla
 
-if ($result === FALSE) {
-    error_log('Error al enviar email a Formspree');
-}
 
-// Guardar el resumen antes de vaciar el carrito
+// ---- PASO 4: PREPARAR LA SESIÓN Y REDIRIGIR ----
+
+// 1. Guardar el resumen para el modal
 $_SESSION['resumen'] = $_SESSION['carrito'];
-$_SESSION['total_compra'] = $_POST['total'];
-header("Location: carrito.php?exito=1");
+$_SESSION['total_compra'] = (float)$_POST['total'];
 
+// 2. Vaciar el carrito AHORA
 $_SESSION['carrito'] = [];
 
-exit;
+// 3. Redirigir al usuario
+header("Location: carrito.php?exito=1");
+exit; 

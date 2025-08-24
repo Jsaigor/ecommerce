@@ -22,6 +22,7 @@ try {
     <link rel="stylesheet" href="./css/estilo_v3.css">
     <link rel="stylesheet" href="./css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap" rel="stylesheet">
     <link rel='stylesheet' href="./css/uicons-brands.css">
 </head>
 <body>
@@ -41,10 +42,10 @@ try {
                 <div class="col-md-6">
                     <textarea name="descripcion" class="form-control" placeholder="Descripción"></textarea>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <input type="number" name="cantidad" class="form-control" placeholder="Cantidad">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <input type="number" name="precio" class="form-control" placeholder="Precio">
                 </div>
                 <div class="col-md-4">
@@ -58,18 +59,18 @@ try {
                     <?php endwhile; ?>
                 </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                 <select name="subcategoria_id" id="subcategoria" class="form-select" required>
                     <option value="">Seleccionar subcategoría</option>
                 </select>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                 <select name="item_id" id="item" class="form-select" required>
                     <option value="">Seleccionar ítem</option>
                 </select>
                 </div>
                 <?php for ($i = 1; $i <= 4; $i++): ?>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="imagen<?= $i ?>">Imagen <?= $i ?>:</label>
                         <input type="file" id="imagen<?= $i ?>" name="imagen<?= $i ?>" class="form-control">
                     </div>
